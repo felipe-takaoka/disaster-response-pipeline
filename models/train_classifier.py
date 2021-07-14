@@ -3,7 +3,7 @@ nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
 
 import re
 import sys
-import pickle
+import joblib
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
@@ -136,8 +136,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 def save_model(model, model_filepath):
     """Saves model as a pickle file in model_filepath"""
-    with open(model_filepath, "wb") as f:
-        pickle.dump(model, f)
+    joblib.dump(model, model_filepath)
 
 
 def main():
