@@ -20,6 +20,24 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
 
+class VerbCounter(BaseEstimator, TransformerMixin):
+    """
+    A sklearn.base.BaseEstimator for creating a feature contaning the count of verbs in a english text
+    using part-of-speech tagging of nltk
+    """
+
+    def count_verbs(self, text):
+        pos_tags = nltk.pos_tag(tokenize(text))
+        return sum([1*('VB' in tag) for _, tag in pos_tags])
+
+    def fit(self, x, y=None):
+        return self
+
+    def transform(self, X):
+        X_tagged = X.apply(self.count_verbs)
+        return pd.DataFrame(X_tagged)
+
+
 def load_data(database_filepath):
     """
     Loads messages data from the provided database returning the original messages, category values and category names.
@@ -78,23 +96,6 @@ def build_model():
     Returns:
     sklearn.base.BaseEstimator: multi-target classifier of the text messages
     """
-    
-    class VerbCounter(BaseEstimator, TransformerMixin):
-        """
-        A sklearn.base.BaseEstimator for creating a feature contaning the count of verbs in a english text
-        using part-of-speech tagging of nltk
-        """
-        
-        def count_verbs(self, text):
-            pos_tags = nltk.pos_tag(tokenize(text))
-            return sum([1*('VB' in tag) for _, tag in pos_tags])
-
-        def fit(self, x, y=None):
-            return self
-
-        def transform(self, X):
-            X_tagged = X.apply(self.count_verbs)
-            return pd.DataFrame(X_tagged)
 
     pipeline = Pipeline([
         ('features', FeatureUnion([
@@ -107,9 +108,9 @@ def build_model():
         ('clf', MultiOutputClassifier(RandomForestClassifier()))
     ])
     parameters = {
-        'clf__estimator__n_estimators': [10, 100], #, 500],
-        'clf__estimator__max_depth': [None], #, 5, 10, 20],
-        'clf__estimator__min_samples_split': [2, 10] #, 20]
+        'clf__estimator__n_estimators': [10, 100, 500],
+        'clf__estimator__max_depth': [None, 5, 10, 20],
+        'clf__estimator__min_samples_split': [2, 10, 20]
     }
 
     cv = GridSearchCV(pipeline, param_grid=parameters)
