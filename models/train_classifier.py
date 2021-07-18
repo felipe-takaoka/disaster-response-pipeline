@@ -3,40 +3,19 @@ nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
 
 import re
 import sys
-import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
 import joblib
-#from sklearn.externals import joblib
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline, FeatureUnion
-#from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-
-
-# class VerbCounter(BaseEstimator, TransformerMixin):
-#     """
-#     A sklearn.base.BaseEstimator for creating a feature contaning the count of verbs in a english text
-#     using part-of-speech tagging of nltk
-#     """
-
-#     def count_verbs(self, text):
-#         pos_tags = nltk.pos_tag(tokenize(text))
-#         return sum([1*('VB' in tag) for _, tag in pos_tags])
-
-#     def fit(self, x, y=None):
-#         return self
-
-#     def transform(self, X):
-#         X_tagged = X.apply(self.count_verbs)
-#         return pd.DataFrame(X_tagged)
 
 
 def load_data(database_filepath):
