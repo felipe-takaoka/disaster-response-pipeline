@@ -83,9 +83,9 @@ def build_model():
         ('clf', MultiOutputClassifier(RandomForestClassifier()))
     ])
     parameters = {
-        'clf__estimator__n_estimators': [10],#, 100, 500],
-        'clf__estimator__max_depth': [None],#, 5, 10, 20],
-        'clf__estimator__min_samples_split': [2]#, 10, 20]
+        'clf__estimator__n_estimators': [10, 100, 500],
+        'clf__estimator__max_depth': [None, 5, 10, 20],
+        'clf__estimator__min_samples_split': [2, 10, 20]
     }
 
     cv = GridSearchCV(pipeline, param_grid=parameters)
@@ -120,7 +120,7 @@ def main():
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=1)
         
         print('Building model...')
         model = build_model()
