@@ -44,8 +44,8 @@ def clean_data(df):
     categories.columns = category_colnames
     
     # Set category values to be the last character of the string (binary value)
-    for column in categories:
-        categories[column] = categories[column].str[-1].replace(2, np.nan)
+    for column in categories.columns:
+        categories[column] = categories[column].str[-1].replace('2', np.nan)
         categories[column] = pd.to_numeric(categories[column])
 
     # Concatenate the resulting transformed categories data
