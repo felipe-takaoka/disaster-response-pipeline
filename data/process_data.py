@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 import pandas as pd
+import numpy as np
 import sys
 
 
@@ -44,12 +45,15 @@ def clean_data(df):
     
     # Set category values to be the last character of the string (binary value)
     for column in categories:
-        categories[column] = categories[column].str[-1]
+        categories[column] = categories[column].str[-1].replace(2, np.nan)
         categories[column] = pd.to_numeric(categories[column])
 
     # Concatenate the resulting transformed categories data
     df = df.drop(columns='categories')
     df = pd.concat([df, categories], axis=1)
+
+    # Drops rows with nan
+    df = df.dropna()
     
     # Drop duplicates
     df = df.drop_duplicates()
