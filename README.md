@@ -1,5 +1,7 @@
 # Disaster Response Pipeline Project
 
+![Web App Home Page](assets/home.png)
+
 ## Project Motivation
 This projects intends to build an ETL Pipeline with a NLP machine learning model to classify message categories to help in disaster response.
 
