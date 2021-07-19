@@ -41,7 +41,7 @@ def tokenizeWithoutStopWordsAndPunctuation(txt):
 X, Y = df['message'], df.iloc[:,4:]
 _, X_test, _, Y_test = train_test_split(X, Y, test_size=0.2, random_state=1)
 # Sample dataset to reduce runtime
-tokens = X_test.sample(5000).apply(tokenizeWithoutStopWordsAndPunctuation).explode()
+tokens = X_test.sample(1000).apply(tokenizeWithoutStopWordsAndPunctuation).explode()
 top_tokens = tokens.value_counts(ascending=True, normalize=True).tail(10)
 
 # Chart 3: Top categories
